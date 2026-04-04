@@ -64,7 +64,7 @@ function StandardView({ lead, variant, headline, positiveReviews }) {
             <div style={{color:'#555',fontSize:'15px'}}>{lead.review_count} verified Google reviews</div>
           </div>
 
-          <h2 style={{fontSize:'22px',fontWeight:'600',color:'#1a1a2e',lineHeight:'1.4',marginBottom:'24px',textAlign:'center'}}>{fullHeadline}</h2>
+          <h2 style={{fontSize:'22px',fontWeight:'600',color:'#1a1a2e',lineHeight:'1.4',marginBottom:'24px',textAlign:'center'}}>{headline}}</h2>
 
           {positiveReviews.slice(0, 3).map(function(review, i) {
             return (
