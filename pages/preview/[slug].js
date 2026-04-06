@@ -7,7 +7,7 @@ export default function PreviewPage({ lead }) {
   const { v, compare } = router.query;
   const ctaText = "Claim This Site";
   const showComparison = compare === "true";
-  if (!lead) return <div style={{padding:"40px",textAlign:"center"}}>Loading...</div>;
+  if (!lead) return <div style={{padding:"40px",textAlign:"center",fontFamily:"Inter,sans-serif",color:"#666"}}>This preview page is not available.</div>;
   const reviews = lead.top_reviews ? JSON.parse(lead.top_reviews) : [];
   const positiveReviews = reviews.filter(r => r.rating >= 4);
   const headlines = {
@@ -32,7 +32,10 @@ function StandardView({ lead, headline, positiveReviews, ctaText }) {
       </Head>
 
       <nav style={{background:"#fff",borderBottom:"1px solid #f0f0f0",padding:"0 48px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"60px",position:"sticky",top:0,zIndex:100}}>
-        <div style={{display:"flex",alignItems:"center",gap:"16px"}}><div style={{fontWeight:"800",fontSize:"16px",letterSpacing:"-0.3px"}}>{lead.business_name}</div>{lead.phone && <a href={"tel:"+lead.phone} style={{fontSize:"13px",color:"#22c55e",fontWeight:"600",textDecoration:"none"}}>{lead.phone}</a>}</div>
+        <div style={{display:"flex",alignItems:"center",gap:"16px"}}>
+          <div style={{fontWeight:"800",fontSize:"16px",letterSpacing:"-0.3px"}}>{lead.business_name}</div>
+          {lead.phone && <a href={"tel:"+lead.phone} style={{fontSize:"13px",color:"#22c55e",fontWeight:"600",textDecoration:"none"}}>{lead.phone}</a>}
+        </div>
         <div style={{display:"flex",gap:"32px",fontSize:"14px",color:"#666",fontWeight:"500"}}>
           <span style={{cursor:"pointer"}}>Services</span>
           <span style={{cursor:"pointer"}}>Reviews</span>
@@ -57,7 +60,7 @@ function StandardView({ lead, headline, positiveReviews, ctaText }) {
         </div>
       </div>
 
-      <div style={{background:"#f7f7f7",borderTop:"1px solid #eee",borderBottom:"1px solid #eee",padding:"48px 48px",maxWidth:"100%"}}>
+      <div style={{background:"#f7f7f7",borderTop:"1px solid #eee",borderBottom:"1px solid #eee",padding:"48px",maxWidth:"100%"}}>
         <div style={{maxWidth:"900px",margin:"0 auto"}}>
           <div style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"32px"}}>
             <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#999",textTransform:"uppercase"}}>CUSTOMER REVIEWS</div>
@@ -102,85 +105,49 @@ function StandardView({ lead, headline, positiveReviews, ctaText }) {
             </div>
           </div>
         </div>
-        <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{background:"#111",color:"#fff",padding:"16px 32px",borderRadius:"10px",fontSize:"16px",fontWeight:"700",textDecoration:"none",letterSpacing:"-0.3px",whiteSpace:"nowrap",display:"inline-block"}}>{ctaText}</a>
+        <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{background:"#111",color:"#fff",padding:"16px 32px",borderRadius:"10px",fontSize:"15px",fontWeight:"700",textDecoration:"none",flexShrink:0}}>{ctaText}</a>
       </div>
-
-      <div style={{background:"#111",color:"#fff",padding:"56px 48px",textAlign:"center"}}>
-        <div style={{maxWidth:"560px",margin:"0 auto"}}>
-          <h2 style={{fontSize:"clamp(24px,3vw,38px)",fontWeight:"900",marginBottom:"12px",letterSpacing:"-1px"}}>This is what your site could look like.</h2>
-          <p style={{fontSize:"16px",color:"#777",marginBottom:"32px",lineHeight:"1.6"}}>Custom built for {lead.business_name}. Live in 7 days.</p>
-          <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{display:"inline-block",background:"#fff",color:"#111",padding:"16px 36px",borderRadius:"10px",fontSize:"16px",fontWeight:"700",textDecoration:"none",letterSpacing:"-0.3px"}}>{ctaText}</a>
-          <p style={{fontSize:"12px",color:"#444",marginTop:"16px"}}>No commitment. No credit card. Just a conversation.</p>
-        </div>
-      </div>
-
-      <footer style={{borderTop:"1px solid #f0f0f0",padding:"20px 48px",display:"flex",justifyContent:"space-between",alignItems:"center"}}>
-        <div style={{fontWeight:"700",fontSize:"14px"}}>{lead.business_name}</div>
-        <div style={{fontSize:"13px",color:"#aaa"}}>{lead.city}</div>
-      </footer>
     </div>
   );
 }
 
 function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
   return (
-    <div style={{fontFamily:"'Inter',system-ui,sans-serif",minHeight:"100vh"}}>
+    <div style={{fontFamily:"'Inter',system-ui,sans-serif",background:"#fff",minHeight:"100vh",color:"#111"}}>
       <Head>
-        <title>{lead.business_name} - Before and After</title>
+        <title>{lead.business_name} — Before & After</title>
         <meta name="robots" content="noindex" />
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </Head>
-      <div style={{background:"#111",color:"#fff",padding:"28px 48px",textAlign:"center"}}>
-        <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#22c55e",textTransform:"uppercase",marginBottom:"10px"}}>WEBSITE PREVIEW</div>
-        <h1 style={{fontSize:"clamp(20px,3vw,32px)",fontWeight:"900",margin:"0 0 8px",letterSpacing:"-1px"}}>{lead.business_name}</h1>
-        <p style={{color:"#666",margin:"0",fontSize:"15px",fontWeight:"400"}}>{headline}</p>
-      </div>
-      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",minHeight:"calc(100vh - 120px)"}}>
-        <div style={{background:"#fafafa",padding:"40px",borderRight:"2px solid #111"}}>
-          <div style={{textAlign:"center",marginBottom:"24px"}}>
-            <span style={{background:"#fef2f2",color:"#dc2626",padding:"5px 18px",borderRadius:"50px",fontSize:"12px",fontWeight:"700",letterSpacing:"1px"}}>BEFORE</span>
+      <div style={{padding:"48px",maxWidth:"1000px",margin:"0 auto"}}>
+        <div style={{textAlign:"center",marginBottom:"48px"}}>
+          <h1 style={{fontSize:"clamp(28px,4vw,48px)",fontWeight:"900",color:"#111",letterSpacing:"-1.5px",marginBottom:"12px"}}>{lead.business_name}</h1>
+          <p style={{fontSize:"16px",color:"#666",maxWidth:"480px",margin:"0 auto"}}>{headline}</p>
+        </div>
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"24px",marginBottom:"40px"}}>
+          <div style={{background:"#fff5f5",border:"1px solid #fecaca",borderRadius:"12px",padding:"24px"}}>
+            <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#ef4444",textTransform:"uppercase",marginBottom:"16px"}}>RIGHT NOW</div>
+            <div style={{fontSize:"15px",color:"#666",lineHeight:"1.8"}}>
+              <div style={{marginBottom:"8px"}}>✗ Broken or missing website</div>
+              <div style={{marginBottom:"8px"}}>✗ No way to book online</div>
+              <div style={{marginBottom:"8px"}}>✗ Reviews buried on Google</div>
+              <div>✗ Losing jobs to competitors</div>
+            </div>
           </div>
-          <div style={{background:"#fff",borderRadius:"12px",padding:"48px 32px",textAlign:"center",border:"1px solid #fee2e2",minHeight:"380px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"12px"}}>
-            <div style={{fontSize:"52px"}}>{lead.situation_tag === "facebook_only" ? "📘" : lead.situation_tag === "coming_soon" ? "🚧" : "💔"}</div>
-            <div style={{fontSize:"17px",fontWeight:"700",color:"#dc2626"}}>{lead.situation_tag === "facebook_only" ? "Facebook Page Only" : lead.situation_tag === "coming_soon" ? "Coming Soon Page" : "Website Not Found"}</div>
-            <div style={{fontSize:"13px",color:"#999",maxWidth:"220px",lineHeight:"1.6"}}>{lead.situation_tag === "facebook_only" ? "Customers cannot find what they need" : lead.situation_tag === "coming_soon" ? "Customers are waiting but nothing is there" : "Customers get an error when they visit"}</div>
-          </div>
-          <div style={{marginTop:"20px",background:"#fef2f2",borderRadius:"8px",padding:"14px 16px"}}>
-            <div style={{fontSize:"13px",color:"#dc2626",fontWeight:"600",marginBottom:"2px"}}>What customers experience now</div>
-            <div style={{fontSize:"12px",color:"#999"}}>Confusion, dead links, no way to reach you</div>
+          <div style={{background:"#f0fdf4",border:"2px solid #22c55e",borderRadius:"12px",padding:"24px"}}>
+            <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#16a34a",textTransform:"uppercase",marginBottom:"16px"}}>WITH YOUR NEW SITE</div>
+            <div style={{fontSize:"15px",color:"#333",lineHeight:"1.8"}}>
+              <div style={{marginBottom:"8px"}}>✓ Professional online presence</div>
+              <div style={{marginBottom:"8px"}}>✓ One-click booking</div>
+              <div style={{marginBottom:"8px"}}>✓ Reviews front and center</div>
+              <div>✓ New customers find you</div>
+            </div>
           </div>
         </div>
-        <div style={{background:"#fff",padding:"40px"}}>
-          <div style={{textAlign:"center",marginBottom:"24px"}}>
-            <span style={{background:"#f0fdf4",color:"#16a34a",padding:"5px 18px",borderRadius:"50px",fontSize:"12px",fontWeight:"700",letterSpacing:"1px"}}>AFTER</span>
-          </div>
-          <div style={{background:"#f9f9f9",borderRadius:"12px",overflow:"hidden",border:"1px solid #ebebeb"}}>
-            <div style={{background:"#111",padding:"10px 16px",display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div style={{fontWeight:"700",fontSize:"13px",color:"#fff"}}>{lead.business_name}</div>
-              <div style={{display:"flex",gap:"14px",fontSize:"11px",color:"#666"}}><span>Services</span><span>Reviews</span><span>Contact</span></div>
-            </div>
-            <div style={{padding:"28px",textAlign:"center",background:"linear-gradient(135deg,#f9f9f9,#f0fdf4)"}}>
-              <div style={{fontSize:"22px",fontWeight:"900",color:"#111",letterSpacing:"-0.5px"}}>{lead.business_name}</div>
-              <div style={{display:"inline-flex",alignItems:"center",gap:"6px",background:"#fff",borderRadius:"50px",padding:"4px 12px",marginTop:"10px",fontSize:"12px",boxShadow:"0 2px 6px rgba(0,0,0,0.06)"}}>
-                <span style={{color:"#f59e0b"}}>★</span><span style={{fontWeight:"700"}}>{lead.star_rating}</span><span style={{color:"#aaa"}}>({lead.review_count} reviews)</span>
-              </div>
-            </div>
-            {positiveReviews.slice(0,2).map((review,i) => (
-              <div key={i} style={{padding:"14px 18px",borderTop:"1px solid #f0f0f0"}}>
-                <div style={{color:"#f59e0b",fontSize:"11px",marginBottom:"4px"}}>★★★★★</div>
-                <p style={{fontSize:"12px",color:"#555",lineHeight:"1.55",margin:"0 0 4px",fontStyle:"italic"}}>"{review.text.substring(0,100)}..."</p>
-                <p style={{fontSize:"11px",color:"#bbb",margin:"0"}}>- {review.author}</p>
-              </div>
-            ))}
-          </div>
-          <div style={{marginTop:"20px",background:"#f0fdf4",borderRadius:"8px",padding:"14px 16px"}}>
-            <div style={{fontSize:"13px",color:"#16a34a",fontWeight:"600",marginBottom:"2px"}}>What customers experience after</div>
-            <div style={{fontSize:"12px",color:"#777"}}>Professional, credible, easy to contact</div>
-          </div>
-          <div style={{textAlign:"center",marginTop:"20px"}}>
-            <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{display:"inline-block",background:"#111",color:"#fff",padding:"13px 28px",borderRadius:"10px",fontSize:"14px",fontWeight:"700",textDecoration:"none"}}>{ctaText}</a>
-            <p style={{fontSize:"12px",color:"#bbb",marginTop:"8px"}}>No commitment. Just a conversation.</p>
-          </div>
+        <div style={{textAlign:"center"}}>
+          <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{background:"#111",color:"#fff",padding:"16px 40px",borderRadius:"10px",fontSize:"16px",fontWeight:"700",textDecoration:"none",display:"inline-block"}}>{ctaText}</a>
+          <p style={{fontSize:"13px",color:"#aaa",marginTop:"12px"}}>No commitment required</p>
         </div>
       </div>
     </div>
@@ -189,33 +156,24 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
 
 export async function getServerSideProps({ params }) {
   const slug = params.slug;
-  const mockLeads = {
-    "leapfrog-landscaping": {
-      business_name: "Leapfrog Landscaping",
-      city: "Toronto",
-      situation_tag: "no_website", phone: "(416) 555-0192",
-      star_rating: 4.8,
-      review_count: 16,
-      website_url: null,
-      top_reviews: JSON.stringify([
-        { author: "John S", rating: 5, text: "Amazing service, showed up on time and did a fantastic job on our backyard. Will definitely hire again." },
-        { author: "Sarah M", rating: 5, text: "Best landscaper in the area. Very professional and fair pricing. Our lawn has never looked better." },
-        { author: "Mike T", rating: 4, text: "Great work on our front lawn. The team was friendly and efficient. Highly recommend." }
-      ])
-    },
-    "edmunds-landscaping": {
-      business_name: "Edmunds Landscaping",
-      city: "Toronto",
-      situation_tag: "dead_website", phone: "(416) 555-0847",
-      star_rating: 4.1,
-      review_count: 14,
-      website_url: "https://www.edmundslandscaping.ca",
-      top_reviews: JSON.stringify([
-        { author: "Lisa K", rating: 5, text: "Edmunds transformed our garden completely. The attention to detail was incredible and the team was so professional." },
-        { author: "David R", rating: 4, text: "Reliable and hardworking team. Good communication throughout the whole project. Would hire again." }
-      ])
+
+  try {
+    const res = await fetch(
+      process.env.SUPABASE_URL + '/rest/v1/Leads?slug=eq.' + encodeURIComponent(slug) + '&select=*',
+      {
+        headers: {
+          'apikey': process.env.SUPABASE_SERVICE_KEY,
+          'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_KEY
+        }
+      }
+    );
+    const data = await res.json();
+    if (data && data.length > 0) {
+      return { props: { lead: data[0] } };
     }
-  };
-  const lead = mockLeads[slug] || null;
-  return { props: { lead } };
+  } catch(e) {
+    console.log('Supabase fetch error:', e.message);
+  }
+
+  return { props: { lead: null } };
 }
