@@ -2,42 +2,18 @@ import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-// PAGE VIEW TRACKER
-function usePageTracking(lead, variant) {
+function usePageTracking(lead, isComparison) {
   const startTime = useRef(Date.now());
   const hotFired = useRef(false);
+  const viewLogged = useRef(false);
 
   useEffect(() => {
-    if (!lead) return;
+    if (!lead || viewLogged.current) return;
+    viewLogged.current = true;
 
-    // Log page view to Supabase
-    async function logView() {
-      try {
-        await fetch(process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/page_views', {
-          method: 'POST',
-          headers: {
-            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-            'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
-          },
-          body: JSON.stringify({
-            lead_id: lead.id,
-            business_name: lead.business_name,
-            slug: lead.slug,
-            variant: variant || 'standard',
-            device: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-            visited_at: new Date().toISOString()
-          })
-        });
-      } catch(e) {
-        console.log('Tracking error:', e.message);
-      }
-    }
+    const device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 
-    logView();
-
-    // Hot lead trigger - 35 seconds on page
+    // Hot lead trigger at 35 seconds
     const hotTimer = setTimeout(async function() {
       if (hotFired.current) return;
       hotFired.current = true;
@@ -50,10 +26,16 @@ function usePageTracking(lead, variant) {
       } catch(e) {}
     }, 35000);
 
-    // Log time spent on page unload
+    // Log time spent when they leave
     function handleUnload() {
       const timeSpent = Math.round((Date.now() - startTime.current) / 1000);
-      navigator.sendBeacon('/api/page-time', JSON.stringify({ slug: lead.slug, business_name: lead.business_name, time_spent: timeSpent }));
+      navigator.sendBeacon('/api/page-time', JSON.stringify({
+        slug: lead.slug,
+        business_name: lead.business_name,
+        time_spent: timeSpent,
+        comparison_view: isComparison,
+        device_type: device
+      }));
     }
 
     window.addEventListener('beforeunload', handleUnload);
@@ -62,17 +44,16 @@ function usePageTracking(lead, variant) {
       clearTimeout(hotTimer);
       window.removeEventListener('beforeunload', handleUnload);
     };
-  }, [lead, variant]);
+  }, [lead, isComparison]);
 }
 
 export default function PreviewPage({ lead }) {
   const router = useRouter();
-  const { v, compare } = router.query;
+  const { compare } = router.query;
   const ctaText = "Claim This Site";
   const showComparison = compare === "true";
-  const variant = showComparison ? 'comparison' : (v || 'standard');
 
-  usePageTracking(lead, variant);
+  usePageTracking(lead, showComparison);
 
   if (!lead) return <div style={{padding:"40px",textAlign:"center",fontFamily:"Inter,sans-serif",color:"#666"}}>This preview page is not available.</div>;
   const reviews = lead.top_reviews ? JSON.parse(lead.top_reviews) : [];

@@ -3,7 +3,6 @@ export default async function handler(req, res) {
   const { business_name, slug, time_spent } = req.body;
 
   try {
-    // Update engagement score in Supabase
     await fetch(process.env.SUPABASE_URL + '/rest/v1/Leads?slug=eq.' + encodeURIComponent(slug), {
       method: 'PATCH',
       headers: {
