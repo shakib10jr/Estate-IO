@@ -1,12 +1,79 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
+
+// PAGE VIEW TRACKER
+function usePageTracking(lead, variant) {
+  const startTime = useRef(Date.now());
+  const hotFired = useRef(false);
+
+  useEffect(() => {
+    if (!lead) return;
+
+    // Log page view to Supabase
+    async function logView() {
+      try {
+        await fetch(process.env.NEXT_PUBLIC_SUPABASE_URL + '/rest/v1/page_views', {
+          method: 'POST',
+          headers: {
+            'apikey': process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            'Authorization': 'Bearer ' + process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            lead_id: lead.id,
+            business_name: lead.business_name,
+            slug: lead.slug,
+            variant: variant || 'standard',
+            device: /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+            visited_at: new Date().toISOString()
+          })
+        });
+      } catch(e) {
+        console.log('Tracking error:', e.message);
+      }
+    }
+
+    logView();
+
+    // Hot lead trigger - 35 seconds on page
+    const hotTimer = setTimeout(async function() {
+      if (hotFired.current) return;
+      hotFired.current = true;
+      try {
+        await fetch('/api/hot-lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ business_name: lead.business_name, slug: lead.slug, time_spent: 35 })
+        });
+      } catch(e) {}
+    }, 35000);
+
+    // Log time spent on page unload
+    function handleUnload() {
+      const timeSpent = Math.round((Date.now() - startTime.current) / 1000);
+      navigator.sendBeacon('/api/page-time', JSON.stringify({ slug: lead.slug, business_name: lead.business_name, time_spent: timeSpent }));
+    }
+
+    window.addEventListener('beforeunload', handleUnload);
+
+    return function() {
+      clearTimeout(hotTimer);
+      window.removeEventListener('beforeunload', handleUnload);
+    };
+  }, [lead, variant]);
+}
 
 export default function PreviewPage({ lead }) {
   const router = useRouter();
   const { v, compare } = router.query;
   const ctaText = "Claim This Site";
   const showComparison = compare === "true";
+  const variant = showComparison ? 'comparison' : (v || 'standard');
+
+  usePageTracking(lead, variant);
+
   if (!lead) return <div style={{padding:"40px",textAlign:"center",fontFamily:"Inter,sans-serif",color:"#666"}}>This preview page is not available.</div>;
   const reviews = lead.top_reviews ? JSON.parse(lead.top_reviews) : [];
   const positiveReviews = reviews.filter(r => r.rating >= 4);
@@ -99,7 +166,6 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </Head>
-
       <nav style={{background:"#fff",borderBottom:"1px solid #f0f0f0",padding:"0 48px",display:"flex",alignItems:"center",justifyContent:"space-between",height:"60px",position:"sticky",top:0,zIndex:100}}>
         <div style={{display:"flex",alignItems:"center",gap:"16px"}}>
           <div style={{fontWeight:"800",fontSize:"16px",letterSpacing:"-0.3px"}}>{lead.business_name}</div>
@@ -107,7 +173,6 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
         </div>
         <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{background:"#111",color:"#fff",padding:"9px 18px",borderRadius:"8px",fontSize:"13px",fontWeight:"600",textDecoration:"none"}}>Get a Quote</a>
       </nav>
-
       <div style={{padding:"56px 48px 40px",maxWidth:"960px",margin:"0 auto"}}>
         <div style={{display:"inline-flex",alignItems:"center",gap:"6px",background:"#f9f9f9",border:"1px solid #e8e8e8",borderRadius:"50px",padding:"5px 14px",fontSize:"13px",color:"#444",marginBottom:"20px",fontWeight:"500"}}>
           <span style={{color:"#f59e0b",fontSize:"14px"}}>★</span>
@@ -117,7 +182,6 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
         </div>
         <h1 style={{fontSize:"clamp(32px,4vw,56px)",fontWeight:"900",color:"#111",lineHeight:"1.05",marginBottom:"12px",letterSpacing:"-2px"}}>{lead.business_name}</h1>
         <p style={{fontSize:"clamp(15px,2vw,18px)",color:"#555",maxWidth:"560px",lineHeight:"1.65",marginBottom:"40px"}}>{headline}</p>
-
         <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"20px",marginBottom:"40px"}}>
           <div style={{background:"#fff5f5",border:"1px solid #fecaca",borderRadius:"12px",padding:"28px"}}>
             <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#ef4444",textTransform:"uppercase",marginBottom:"16px"}}>RIGHT NOW</div>
@@ -138,12 +202,10 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
             </div>
           </div>
         </div>
-
         <div style={{textAlign:"center",marginBottom:"56px"}}>
           <a href={"https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x"} style={{background:"#111",color:"#fff",padding:"16px 40px",borderRadius:"10px",fontSize:"16px",fontWeight:"700",textDecoration:"none",display:"inline-block"}}>{ctaText}</a>
           <p style={{fontSize:"13px",color:"#aaa",marginTop:"12px"}}>No commitment required</p>
         </div>
-
         {positiveReviews.length > 0 && (
           <div>
             <div style={{display:"flex",alignItems:"center",gap:"12px",marginBottom:"24px"}}>
@@ -167,7 +229,6 @@ function ComparisonView({ lead, headline, positiveReviews, ctaText }) {
             </div>
           </div>
         )}
-
         <div style={{background:"#f7f7f7",borderRadius:"12px",padding:"32px",display:"flex",alignItems:"center",justifyContent:"space-between",gap:"32px",flexWrap:"wrap"}}>
           <div>
             <div style={{fontSize:"11px",fontWeight:"700",letterSpacing:"2px",color:"#999",textTransform:"uppercase",marginBottom:"12px"}}>YOUR REPUTATION IN NUMBERS</div>
