@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import Head from "next/head";
 
-function usePageTracking(lead, isComparison) {
+function usePageTracking(lead, isComparison, urlSlug) {
   const startTime = useRef(Date.now());
   const hotFired = useRef(false);
   const viewLogged = useRef(false);
@@ -11,6 +11,7 @@ function usePageTracking(lead, isComparison) {
     if (!lead || viewLogged.current) return;
     viewLogged.current = true;
 
+    const slug = urlSlug || lead.slug || lead.business_name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 
     // Hot lead trigger at 35 seconds
@@ -21,7 +22,7 @@ function usePageTracking(lead, isComparison) {
         await fetch('/api/hot-lead', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ business_name: lead.business_name, slug: lead.slug, time_spent: 35 })
+          body: JSON.stringify({ business_name: lead.business_name, slug: slug, time_spent: 35 })
         });
       } catch(e) {}
     }, 35000);
@@ -30,7 +31,7 @@ function usePageTracking(lead, isComparison) {
     function handleUnload() {
       const timeSpent = Math.round((Date.now() - startTime.current) / 1000);
       navigator.sendBeacon('/api/page-time', JSON.stringify({
-        slug: lead.slug,
+        slug: slug,
         business_name: lead.business_name,
         time_spent: timeSpent,
         comparison_view: isComparison,
@@ -44,16 +45,17 @@ function usePageTracking(lead, isComparison) {
       clearTimeout(hotTimer);
       window.removeEventListener('beforeunload', handleUnload);
     };
-  }, [lead, isComparison]);
+  }, [lead, isComparison, urlSlug]);
 }
 
 export default function PreviewPage({ lead }) {
   const router = useRouter();
   const { compare } = router.query;
+  const urlSlug = router.query.slug;
   const ctaText = "Claim This Site";
   const showComparison = compare === "true";
 
-  usePageTracking(lead, showComparison);
+  usePageTracking(lead, showComparison, urlSlug);
 
   if (!lead) return <div style={{padding:"40px",textAlign:"center",fontFamily:"Inter,sans-serif",color:"#666"}}>This preview page is not available.</div>;
   const reviews = lead.top_reviews ? JSON.parse(lead.top_reviews) : [];
