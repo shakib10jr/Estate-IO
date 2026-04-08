@@ -14,6 +14,17 @@ function usePageTracking(lead, isComparison, urlSlug) {
     const slug = urlSlug || lead.slug || lead.business_name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
     const device = /Mobi|Android/i.test(navigator.userAgent) ? 'mobile' : 'desktop';
 
+    // Visit notification at 3 seconds
+    const visitTimer = setTimeout(async function() {
+      try {
+        await fetch('/api/visit-alert', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ business_name: lead.business_name, slug: slug })
+        });
+      } catch(e) {}
+    }, 3000);
+
     // Hot lead trigger at 35 seconds
     const hotTimer = setTimeout(async function() {
       if (hotFired.current) return;
