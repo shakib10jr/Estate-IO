@@ -1,0 +1,12 @@
+{
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.82.0",
+    "@supabase/supabase-js": "^2.78.0",
+    "axios": "^1.14.0",
+    "dotenv": "^17.3.1",
+    "xlsx": "^0.18.5"
+  },
+  "scripts": {
+    "vercel-build": "echo skipping estateio branch && exit 0"
+  }
+}
