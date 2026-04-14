@@ -15,6 +15,23 @@ export default async function handler(req, res) {
       body: JSON.stringify({ ghl_stage: 'Hot Lead' })
     });
 
+    // Save to page_views
+    await fetch(process.env.SUPABASE_URL + '/rest/v1/page_views', {
+      method: 'POST',
+      headers: {
+        'apikey': process.env.SUPABASE_SERVICE_KEY,
+        'Authorization': 'Bearer ' + process.env.SUPABASE_SERVICE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({
+        slug: slug,
+        business_name: business_name,
+        time_spent_seconds: time_spent || 35,
+        entered_at: new Date().toISOString()
+      })
+    });
+
     // Send SMS via Twilio
     const accountSid = process.env.TWILIO_ACCOUNT_SID;
     const authToken = process.env.TWILIO_AUTH_TOKEN;
