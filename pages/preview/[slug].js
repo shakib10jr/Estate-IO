@@ -218,13 +218,14 @@ function Nav({ lead, config }) {
     },
     logo: {
       fontFamily: config.displayFont,
-      fontSize: '18px',
+      fontSize: config.displayFont.includes('Bebas') ? '28px' : '22px',
       color: config.textPrimary,
-      letterSpacing: '1px',
-      maxWidth: '280px',
+      letterSpacing: config.displayFont.includes('Bebas') ? '2px' : '0.3px',
+      maxWidth: '400px',
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      fontWeight: config.displayFont.includes('Playfair') ? '700' : '400',
     },
     phone: {
       fontSize: '15px',
