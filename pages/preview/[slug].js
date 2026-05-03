@@ -367,19 +367,19 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
           </p>
 
           {/* CTAs */}
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '28px' }}>
+          <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '28px' }}>
             <a href={CTA_URL} style={{
               background: config.accent, color: config.accentText,
-              fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '600',
-              padding: '13px 24px', borderRadius: '3px', textDecoration: 'none',
+              fontFamily: config.bodyFont, fontSize: '15px', fontWeight: '700',
+              padding: '16px 32px', borderRadius: '3px', textDecoration: 'none',
             }}>
               {config.ctaLabel}
             </a>
             {lead.phone && (
               <a href={`tel:${lead.phone}`} style={{
                 background: 'transparent', color: config.textPrimary,
-                fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '400',
-                padding: '13px 24px', borderRadius: '3px', textDecoration: 'none',
+                fontFamily: config.bodyFont, fontSize: '15px', fontWeight: '500',
+                padding: '16px 32px', borderRadius: '3px', textDecoration: 'none',
                 border: `0.5px solid ${config.border}`,
               }}>
                 Call Now
@@ -407,16 +407,65 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
 
         {/* Right — hero image */}
         {config.heroImage && (
-          <div style={{ borderRadius: '8px', overflow: 'hidden', height: '400px', position: 'relative' }}>
-            <img
-              src={config.heroImage}
-              alt={config.heroImageAlt}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.8)' }}
-            />
+          <div style={{ position: 'relative', height: '420px' }}>
+            {/* Image with rounded corners and fade */}
             <div style={{
-              position: 'absolute', inset: 0,
-              background: `linear-gradient(135deg, ${config.bg}55 0%, transparent 70%)`,
-            }} />
+              borderRadius: '12px',
+              overflow: 'hidden',
+              height: '100%',
+              position: 'relative',
+              boxShadow: `0 32px 80px ${config.accent}22`,
+            }}>
+              <img
+                src={config.heroImage}
+                alt={config.heroImageAlt}
+                style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.75)' }}
+              />
+              {/* Left fade to blend with background */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: `linear-gradient(to right, ${config.bg} 0%, ${config.bg}88 20%, transparent 50%)`,
+              }} />
+              {/* Bottom fade */}
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: `linear-gradient(to top, ${config.bg}99 0%, transparent 40%)`,
+              }} />
+            </div>
+
+            {/* Revenue insight badge — floating over image */}
+            <div style={{
+              position: 'absolute',
+              bottom: '20px',
+              left: '20px',
+              background: config.bg,
+              border: `0.5px solid ${config.accent}44`,
+              borderRadius: '8px',
+              padding: '12px 16px',
+              maxWidth: '220px',
+            }}>
+              <div style={{ fontFamily: config.bodyFont, fontSize: '10px', color: config.accent, fontWeight: '600', letterSpacing: '0.5px', marginBottom: '4px' }}>
+                WHY THIS MATTERS
+              </div>
+              <div style={{ fontFamily: config.bodyFont, fontSize: '12px', color: config.textPrimary, lineHeight: '1.5', fontWeight: '300' }}>
+                Businesses with websites get <strong style={{ color: config.accent, fontWeight: '600' }}>3x more calls</strong> than those without
+              </div>
+            </div>
+
+            {/* Built for you note */}
+            <div style={{
+              position: 'absolute',
+              top: '16px',
+              right: '16px',
+              background: `${config.accent}18`,
+              border: `0.5px solid ${config.accent}44`,
+              borderRadius: '20px',
+              padding: '5px 12px',
+            }}>
+              <div style={{ fontFamily: config.bodyFont, fontSize: '10px', color: config.accent, fontWeight: '600' }}>
+                Built using your real reviews
+              </div>
+            </div>
           </div>
         )}
       </div>
