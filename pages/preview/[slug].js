@@ -99,7 +99,7 @@ const NICHE_CONFIG = {
     urgency: 'Booking projects now — spots fill fast',
     ctaLabel: 'Request a Quote',
     trustItems: ['Licensed & Insured', 'Free Consultations', 'Local & Trusted'],
-    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop',
+    heroImage: 'https://images.unsplash.com/photo-1585320806297-9794b3e4edd0?w=800&q=80&fit=crop',
     heroImageAlt: 'Beautiful landscaped garden',
   },
   roofing: {
