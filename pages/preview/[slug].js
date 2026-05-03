@@ -80,6 +80,8 @@ const NICHE_CONFIG = {
     urgency: 'Same-week availability — limited openings',
     ctaLabel: 'Get a Free Quote',
     trustItems: ['Licensed & Insured', 'Free Estimates', 'Same-Day Service'],
+    heroImage: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=800&q=80&fit=crop',
+    heroImageAlt: 'Electrician working on panel',
   },
   landscaping: {
     bg: '#111a0b',
@@ -97,6 +99,8 @@ const NICHE_CONFIG = {
     urgency: 'Booking projects now — spots fill fast',
     ctaLabel: 'Request a Quote',
     trustItems: ['Licensed & Insured', 'Free Consultations', 'Local & Trusted'],
+    heroImage: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80&fit=crop',
+    heroImageAlt: 'Beautiful landscaped garden',
   },
   roofing: {
     bg: '#100d09',
@@ -114,6 +118,27 @@ const NICHE_CONFIG = {
     urgency: 'Free inspections available — book before the rush',
     ctaLabel: 'Get a Free Estimate',
     trustItems: ['Licensed & Insured', 'Free Inspections', 'Warranty Included'],
+    heroImage: 'https://images.unsplash.com/photo-1632759145351-1d592919f522?w=800&q=80&fit=crop',
+    heroImageAlt: 'Professional roofing work',
+  },
+  plumbing: {
+    bg: '#090f14',
+    bgSecondary: '#0e1520',
+    accent: '#3b9ad9',
+    accentText: '#ffffff',
+    textPrimary: '#e8f0f5',
+    textMuted: 'rgba(232,240,245,0.45)',
+    border: 'rgba(59,154,217,0.1)',
+    reviewBg: 'rgba(59,154,217,0.04)',
+    displayFont: "'Bebas Neue', sans-serif",
+    bodyFont: "'DM Sans', sans-serif",
+    googleFonts: 'Bebas+Neue&family=DM+Sans:wght@300;400;500;600',
+    badge: '24/7 EMERGENCY PLUMBING',
+    urgency: 'Emergency calls answered — same day service',
+    ctaLabel: 'Get a Free Quote',
+    trustItems: ['Licensed & Insured', 'Free Estimates', '24/7 Emergency'],
+    heroImage: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=800&q=80&fit=crop',
+    heroImageAlt: 'Plumber at work',
   },
   default: {
     bg: '#09090f',
@@ -131,6 +156,8 @@ const NICHE_CONFIG = {
     urgency: 'Limited availability — book now',
     ctaLabel: 'Get a Free Quote',
     trustItems: ['Licensed & Insured', 'Free Estimates', 'Local & Trusted'],
+    heroImage: null,
+    heroImageAlt: '',
   }
 };
 
@@ -200,10 +227,12 @@ function Nav({ lead, config }) {
       textOverflow: 'ellipsis',
     },
     phone: {
-      fontSize: '12px',
-      color: config.textMuted,
+      fontSize: '15px',
+      fontWeight: '600',
+      color: config.textPrimary,
       fontFamily: config.bodyFont,
       textDecoration: 'none',
+      letterSpacing: '0.3px',
     },
     cta: {
       background: config.accent,
@@ -279,91 +308,117 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
 
       <Nav lead={lead} config={config} />
 
-      {/* Hero */}
-      <div style={{ padding: '56px 32px 48px', maxWidth: '860px', margin: '0 auto' }}>
-        {/* Badge */}
-        <div style={{
-          display: 'inline-flex', alignItems: 'center', gap: '8px',
-          background: `${config.accent}18`, border: `0.5px solid ${config.accent}44`,
-          borderRadius: '20px', padding: '5px 14px', marginBottom: '24px',
-        }}>
-          <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: config.accent }} />
-          <span style={{ fontFamily: config.bodyFont, fontSize: '10px', color: config.accent, fontWeight: '600', letterSpacing: '1px' }}>
-            {config.badge}
-          </span>
-        </div>
-
-        {/* City headline */}
-        <h1 style={{
-          fontFamily: config.displayFont,
-          fontSize: 'clamp(42px, 7vw, 72px)',
-          lineHeight: '0.95',
-          color: config.textPrimary,
-          marginBottom: '8px',
-          letterSpacing: config.displayFont.includes('Bebas') ? '1px' : '0',
-          fontWeight: config.displayFont.includes('Playfair') ? '700' : '400',
-        }}>
-          {city ? (
-            <>
-              {city}&apos;s<br />
-              <span style={{ color: config.accent }}>Trusted</span><br />
-              {lead.niche || 'Business'}
-            </>
-          ) : (
-            lead.business_name
-          )}
-        </h1>
-
-        {/* Subheadline */}
-        <p style={{
-          fontFamily: config.bodyFont,
-          fontSize: '14px',
-          color: config.textMuted,
-          maxWidth: '440px',
-          lineHeight: '1.7',
-          margin: '20px 0 28px',
-          fontWeight: '300',
-        }}>
-          {headline}
-        </p>
-
-        {/* CTAs */}
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '28px' }}>
-          <a href={CTA_URL} style={{
-            background: config.accent, color: config.accentText,
-            fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '600',
-            padding: '13px 24px', borderRadius: '3px', textDecoration: 'none',
+      {/* Hero — two column */}
+      <div style={{
+        padding: '56px 32px 48px',
+        maxWidth: '1100px',
+        margin: '0 auto',
+        display: 'grid',
+        gridTemplateColumns: config.heroImage ? '1fr 1fr' : '1fr',
+        gap: '48px',
+        alignItems: 'center',
+      }}>
+        {/* Left — text */}
+        <div>
+          {/* Badge */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            background: `${config.accent}18`, border: `0.5px solid ${config.accent}44`,
+            borderRadius: '20px', padding: '5px 14px', marginBottom: '24px',
           }}>
-            {config.ctaLabel}
-          </a>
-          {lead.phone && (
-            <a href={`tel:${lead.phone}`} style={{
-              background: 'transparent', color: config.textPrimary,
-              fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '400',
+            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: config.accent }} />
+            <span style={{ fontFamily: config.bodyFont, fontSize: '10px', color: config.accent, fontWeight: '600', letterSpacing: '1px' }}>
+              {config.badge}
+            </span>
+          </div>
+
+          {/* City headline */}
+          <h1 style={{
+            fontFamily: config.displayFont,
+            fontSize: 'clamp(42px, 7vw, 72px)',
+            lineHeight: '0.95',
+            color: config.textPrimary,
+            marginBottom: '8px',
+            letterSpacing: config.displayFont.includes('Bebas') ? '1px' : '0',
+            fontWeight: config.displayFont.includes('Playfair') ? '700' : '400',
+          }}>
+            {city ? (
+              <>
+                {city}&apos;s<br />
+                <span style={{ color: config.accent }}>Trusted</span><br />
+                {lead.niche || 'Business'}
+              </>
+            ) : (
+              lead.business_name
+            )}
+          </h1>
+
+          {/* Subheadline */}
+          <p style={{
+            fontFamily: config.bodyFont,
+            fontSize: '14px',
+            color: config.textMuted,
+            maxWidth: '440px',
+            lineHeight: '1.7',
+            margin: '20px 0 28px',
+            fontWeight: '300',
+          }}>
+            {headline}
+          </p>
+
+          {/* CTAs */}
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', flexWrap: 'wrap', marginBottom: '28px' }}>
+            <a href={CTA_URL} style={{
+              background: config.accent, color: config.accentText,
+              fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '600',
               padding: '13px 24px', borderRadius: '3px', textDecoration: 'none',
-              border: `0.5px solid ${config.border}`,
             }}>
-              Call Now
+              {config.ctaLabel}
             </a>
-          )}
+            {lead.phone && (
+              <a href={`tel:${lead.phone}`} style={{
+                background: 'transparent', color: config.textPrimary,
+                fontFamily: config.bodyFont, fontSize: '13px', fontWeight: '400',
+                padding: '13px 24px', borderRadius: '3px', textDecoration: 'none',
+                border: `0.5px solid ${config.border}`,
+              }}>
+                Call Now
+              </a>
+            )}
+          </div>
+
+          {/* Trust badges */}
+          <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
+            {config.trustItems.map((item, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: '6px',
+                fontFamily: config.bodyFont, fontSize: '11px', color: config.textMuted, fontWeight: '300',
+              }}>
+                <div style={{
+                  width: '14px', height: '14px', borderRadius: '50%', background: config.accent,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: '8px', color: config.accentText, flexShrink: 0, fontWeight: '700',
+                }}>✓</div>
+                {item}
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* Trust badges */}
-        <div style={{ display: 'flex', gap: '18px', flexWrap: 'wrap' }}>
-          {config.trustItems.map((item, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: '6px',
-              fontFamily: config.bodyFont, fontSize: '11px', color: config.textMuted, fontWeight: '300',
-            }}>
-              <div style={{
-                width: '14px', height: '14px', borderRadius: '50%', background: config.accent,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: '8px', color: config.accentText, flexShrink: 0, fontWeight: '700',
-              }}>✓</div>
-              {item}
-            </div>
-          ))}
-        </div>
+        {/* Right — hero image */}
+        {config.heroImage && (
+          <div style={{ borderRadius: '8px', overflow: 'hidden', height: '400px', position: 'relative' }}>
+            <img
+              src={config.heroImage}
+              alt={config.heroImageAlt}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', filter: 'brightness(0.8)' }}
+            />
+            <div style={{
+              position: 'absolute', inset: 0,
+              background: `linear-gradient(135deg, ${config.bg}55 0%, transparent 70%)`,
+            }} />
+          </div>
+        )}
       </div>
 
       {/* Stats bar */}
