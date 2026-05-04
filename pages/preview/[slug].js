@@ -171,7 +171,7 @@ const HEADLINES = {
 };
 
 // ─── CTA url ──────────────────────────────────────────────────────────────────
-const CTA_URL = "https://api.leadconnectorhq.com/widget/booking/Ky0LANieHvhRSBg3v24x";
+const CTA_URL = "https://api.leadconnectorhq.com/widget/bookings/john-doe-personal-calendar-q_de8zlzg";
 
 // ─── Main page component ──────────────────────────────────────────────────────
 export default function PreviewPage({ lead }) {
