@@ -315,7 +315,7 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
         maxWidth: '1100px',
         margin: '0 auto',
         display: 'grid',
-        style={{ gridTemplateColumns: '1fr',
+        gridTemplateColumns: '1fr',
         gap: '48px',
         alignItems: 'center',
       }}>
