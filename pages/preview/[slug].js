@@ -315,7 +315,7 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
         maxWidth: '1100px',
         margin: '0 auto',
         display: 'grid',
-        gridTemplateColumns: config.heroImage ? '1fr 1fr' : '1fr',
+        className: "hero-grid", style: {{ gridTemplateColumns: config.heroImage ? '1fr 1fr' : '1fr',
         gap: '48px',
         alignItems: 'center',
       }}>
