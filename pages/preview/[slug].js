@@ -302,7 +302,7 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
     <div style={{ fontFamily: config.bodyFont, background: config.bg, minHeight: '100vh', color: config.textPrimary }}>
       <Head>
         <title>{lead.business_name}</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex" /><style>{`@media(max-width:768px){.hero-grid{grid-template-columns:1fr!important}.hero-image{display:none!important}.nav-logo{font-size:18px!important;max-width:180px!important}}`}</style><style>{`@media(max-width:768px){.hero-grid{grid-template-columns:1fr!important;}.hero-image{display:none!important;}.nav-logo{font-size:18px!important;max-width:180px!important;}.hero-pad{padding:32px 20px!important;}}`}</style>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link href={`https://fonts.googleapis.com/css2?family=${config.googleFonts}&display=swap`} rel="stylesheet" />
       </Head>
@@ -569,7 +569,7 @@ function ComparisonView({ lead, headline, positiveReviews, config, city }) {
     <div style={{ fontFamily: config.bodyFont, background: config.bg, minHeight: '100vh', color: config.textPrimary }}>
       <Head>
         <title>{lead.business_name} — Your New Site Preview</title>
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="noindex" /><style>{`@media(max-width:768px){.hero-grid{grid-template-columns:1fr!important}.hero-image{display:none!important}.nav-logo{font-size:18px!important;max-width:180px!important}}`}</style>
         <meta name="viewport" content="width=device-width,initial-scale=1" />
         <link href={`https://fonts.googleapis.com/css2?family=${config.googleFonts}&display=swap`} rel="stylesheet" />
       </Head>
