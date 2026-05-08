@@ -315,7 +315,7 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
         maxWidth: '1100px',
         margin: '0 auto',
         display: 'grid',
-        className: "hero-grid", style: {{ gridTemplateColumns: config.heroImage ? '1fr 1fr' : '1fr',
+        className: "hero-grid", style: {{ gridTemplateColumns: '1fr',
         gap: '48px',
         alignItems: 'center',
       }}>
@@ -408,7 +408,7 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
 
         {/* Right — hero image — hidden on mobile */}
         {config.heroImage && (
-          <div style={{ position: 'relative', height: '420px', display: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'block' }}>
+          <div style={{ position: 'relative', height: '420px' }}>
             {/* Image with rounded corners and fade */}
             <div style={{
               borderRadius: '12px',
