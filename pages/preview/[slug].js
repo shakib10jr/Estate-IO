@@ -406,9 +406,9 @@ function StandardView({ lead, headline, positiveReviews, config, city }) {
           </div>
         </div>
 
-        {/* Right — hero image */}
+        {/* Right — hero image — hidden on mobile */}
         {config.heroImage && (
-          <div style={{ position: 'relative', height: '420px' }}>
+          <div style={{ position: 'relative', height: '420px', display: typeof window !== 'undefined' && window.innerWidth < 768 ? 'none' : 'block' }}>
             {/* Image with rounded corners and fade */}
             <div style={{
               borderRadius: '12px',
